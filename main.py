@@ -3,9 +3,13 @@ import pygame
 from pygame.locals import *   #importar essa sub lib para poder utilizar a função pygame.event.get()
 import random
 
+pygame.font.init()   #iniciar as fontes pelo pygame
+font = pygame.font.SysFont('Arial', 35, True, True)  #escolher a fonte através das fontes do sistema + seu tamanho e se é negrito e italico
+# pygame.font.get_fonts()  mostra todas as fontes disponiveis
+
+
 #definir as dimensões da janela onde o jogo irá ser reproduzido
 #Através de constantes que receberão suas dimensões
-
 WINDOW_HEIGHT = 600   #constantes devem ser definidas sempre com letra maiuscula no python. Boas práticas
 WINDOW_WIDTH = 600
 
@@ -18,8 +22,8 @@ snake_surface = pygame.Surface((BLOCK, BLOCK))  #dimensões da cobra, 10 x 10
 snake_surface.fill((53, 59, 72))  #mudar a cor da cobra
 snake_position = [(INITIAL_POSITION_X, INITIAL_POSITION_Y), (INITIAL_POSITION_X + BLOCK, INITIAL_POSITION_Y), (INITIAL_POSITION_X + 2 * BLOCK, INITIAL_POSITION_Y)]  #instruções de onde a cobra aparecerá inicialmente e suas subsequentes posições
 direcao = K_LEFT   #seu valor inicial aponta para à seta esquerda
-speed = 10
-points = 0
+speed = 10  #velocidade inicial da cobra
+points = 0 #variavel para guardar os pontos
 
 
 #criar obstaculos
@@ -27,6 +31,7 @@ obstacle_surface = pygame.Surface((BLOCK, BLOCK))
 obstacle_surface.fill((0, 0, 0))
 obstacle_position = []  #ficará vázio pois não deverá aparecer no começo, apenas quando houver colisão com maças
 
+pygame.display.set_caption('Jogo da Cobrinha')
 
 def generate_position():   #função para gerar, aleatoriamente, as coordenadas da posição da maça
     x = random.randint(0, WINDOW_WIDTH)
@@ -64,6 +69,9 @@ while True:
     pygame.time.Clock().tick(speed)  #dita a velocidade com que a cobra irá se mover
     window.fill((68, 189, 50))  #prencher a cor da janela com alguma cor através de coordenadas RGB
 
+    message = f'Pontos: {points}'   #mensagem que será formatada
+    text = font.render(message, True, (255,255,255))  #(RGB sempre ser passado em tupla)
+
     for evento in pygame.event.get():  #iterar cada evento que ocorrer durante a execução para 'armazená-lo'
         if evento.type == QUIT:    #condição para fechar o jogo
             pygame.quit()  #fechar o jogo
@@ -88,8 +96,8 @@ while True:
         snake_position.append((-10, -10))  # aumentar o tamanho da cobra adicionando mais pixels ao final da lista de sua posição
         apple_position = generate_position()
         obstacle_position.append(generate_position())  #gerar um novo obstaculo após uma colisão com maça
-        points += 1
-        if points % 5 == 0:
+        points += 1  #somar um ponto sempre que comer uma maça
+        if points % 5 == 0:  #a cada 5 maças comidas, aumentar a velocidade da cobra
             speed += 2
 
 
@@ -121,4 +129,5 @@ while True:
     elif direcao == K_UP:
      snake_position[0] = snake_position[0][0], snake_position[0][1] - BLOCK  #mover a cobra para a cima
 
+    window.blit(text, (420, 30))  #formatar o texto no jogo, passando o mesmo + suas coordenadas x e y
     pygame.display.update()  #atualizar a tela sempre que houver qualquer modificação
