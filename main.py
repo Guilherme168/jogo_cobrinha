@@ -18,6 +18,9 @@ snake_surface = pygame.Surface((BLOCK, BLOCK))  #dimensões da cobra, 10 x 10
 snake_surface.fill((53, 59, 72))  #mudar a cor da cobra
 snake_position = [(INITIAL_POSITION_X, INITIAL_POSITION_Y), (INITIAL_POSITION_X + BLOCK, INITIAL_POSITION_Y), (INITIAL_POSITION_X + 2 * BLOCK, INITIAL_POSITION_Y)]  #instruções de onde a cobra aparecerá inicialmente e suas subsequentes posições
 direcao = K_LEFT   #seu valor inicial aponta para à seta esquerda
+speed = 10
+points = 0
+
 
 #criar obstaculos
 obstacle_surface = pygame.Surface((BLOCK, BLOCK))
@@ -58,7 +61,7 @@ def game_over (): #função para game over
 
 
 while True:
-    pygame.time.Clock().tick(10)  #dita a velocidade com que a cobra irá se mover
+    pygame.time.Clock().tick(speed)  #dita a velocidade com que a cobra irá se mover
     window.fill((68, 189, 50))  #prencher a cor da janela com alguma cor através de coordenadas RGB
 
     for evento in pygame.event.get():  #iterar cada evento que ocorrer durante a execução para 'armazená-lo'
@@ -85,6 +88,9 @@ while True:
         snake_position.append((-10, -10))  # aumentar o tamanho da cobra adicionando mais pixels ao final da lista de sua posição
         apple_position = generate_position()
         obstacle_position.append(generate_position())  #gerar um novo obstaculo após uma colisão com maça
+        points += 1
+        if points % 5 == 0:
+            speed += 2
 
 
     for pos in snake_position:
