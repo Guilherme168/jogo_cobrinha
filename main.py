@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *   #importar essa sub lib para poder utilizar a função pygame.event.get()
 import random
+import time
 
 pygame.font.init()   #iniciar as fontes pelo pygame
 font = pygame.font.SysFont('Arial', 35, True, True)  #escolher a fonte através das fontes do sistema + seu tamanho e se é negrito e italico
@@ -61,6 +62,12 @@ def verify_margin (pos):  #função para verificar a posição da cobra em rela�
         return True
 
 def game_over (): #função para game over
+    font_game_over = pygame.font.SysFont('Arial', 60, True, True)  #escolher a fonte através das fontes do sistema + seu tamanho e se é negrito e italico
+    text_game_over = 'Game Over'
+    over = font_game_over.render(text_game_over, True, (255,255,255))
+    window.blit(over, (140, 300))
+    pygame.display.update()
+    time.sleep(5)
     pygame.quit()  #fechar o jogo
     quit()  #fechar a janela
 
